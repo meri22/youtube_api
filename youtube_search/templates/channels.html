@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Channels</title>
+
+    <!-- Bootstrap core CSS -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="{{ url_for('static', filename='album.css')}}" rel="stylesheet">
+  </head>
+  <body>
+
+<main role="main">
+
+  <section class="jumbotron text-center">
+    <div class="container">
+      <h1 class="jumbotron-heading">Search YouTube</h1>
+      <p class="lead text-muted">Get the top nine results on YouTube for your query!</p>
+      <form method="POST">
+      <div class="input-group mb-3">
+        <input type="text" name="query" class="form-control">
+      </div>
+      <p>
+        <button type="submit" name="submit" value="search" class="btn btn-primary my-2">YouTube Search</button>
+      </p>
+        </form>
+    </div>
+  </section>
+      <div class="album py-5 bg-light">
+{% for channel in channels %}
+       <p>
+           Link: <a href="{{channel.url}}">Click to go to channel</a><br>
+           Title: {{ channel.title or 'N/a'}}<br>
+           Description: {{ channel.channel_description or 'N/a' }}<br>
+           Created on: {{ channel.channel_creation_day or 'N/a' }}<br>
+<!--           Country: {{ channel.channel_country or 'N/a' }}<br>-->
+           Profile picture: {{ channel.channel_profile or 'N/a' }}<br>
+           Total number of views: {{ channel.channel_views or 'N/a' }}<br>
+           Subscribers: {{ channel.channel_subscribers or 0 }}<br>
+           Likes: {{ channel.channel_likes or 0 }}<br>
+           Total number of videos: {{ channel.channel_videos or 0 }}<br>
+           Status: {{ channel.channel_status or 'N/a' }}<br>
+    </p>
+    {% endfor %}
+      </div>
+</main>
