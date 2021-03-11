@@ -105,22 +105,27 @@ def channelss_search():
     return render_template('channels.html')
 
 ##############################################################
-
-
-
 @app.route('/playlists/<playlist>', methods=['GET', 'POST'])
 def playlists(playlist):
     playlists_url = 'https://www.googleapis.com/youtube/v3/playlists'
     query = playlist
+    nextPageToken = None
     playlists_ids = []
-#https://www.youtube.com/watch?v=xC-c7E5PK0Y&list=PL0BAwa0pBqg6dr_DfCL3DmeSLtFoAq7UR
+
     playlist_params = {
-            'key': os.environ.get('YOUTUBE_API_KEY'),
-            'id': query,
-            'part': 'contentDetails, status, snippet'
-        }
+        'key': os.environ.get('YOUTUBE_API_KEY'),
+        'id': query,
+        'part': 'contentDetails, status, snippet',
+        'maxResults': 50,
+        'pageToken': nextPageToken
+    }
     pl_s = requests.get(playlists_url, params=playlist_params)
     results_pl = pl_s.json()['items']
+
+    vid_ids = []
+
+    for item in results_pl:
+        vid_ids.append(item['contentDetails'])
 
     for result in results_pl:
         playlist_data = {
@@ -133,9 +138,7 @@ def playlists(playlist):
             'playlist_status': result['status']['privacyStatus'],
             'playlist_videos': result['contentDetails']['itemCount']
         }
-
         playlists_ids.append(playlist_data)
-    # playlists_ids.append(results_pl)
 
         return render_template('playlists.html', playlists=playlists_ids)
     return redirect(url_for('playlists_search'))
@@ -143,7 +146,6 @@ def playlists(playlist):
 
 @app.route('/playlists', methods=['GET', 'POST'])
 def playlists_search():
-
     if request.method == 'POST':
         search_params = {
             'key': os.environ.get('YOUTUBE_API_KEY'),
@@ -153,4 +155,3 @@ def playlists_search():
         query = search_params['q'].split('=')[-1]
         return redirect(url_for('playlists', playlist=query))
     return render_template('playlists.html')
-

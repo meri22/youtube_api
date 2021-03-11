@@ -60,6 +60,8 @@
 <!--           Likes: {{ playlist.channel_likes or 0 }}<br>-->
            Total number of videos: {{ playlist.playlist_videos or 0 }}<br>
            Status: {{ playlist.playlist_status or 'N/a' }}<br>
+           Most popular: {{ playlist.most_popular or 'N/a' }}<br>
+           Least popular: {{ playlist.least_popular or 'N/a' }}<br>
     </p>
     {% endfor %}
       </div>
